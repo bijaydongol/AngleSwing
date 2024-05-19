@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         # route for login
         post 'auth/signin', to: 'sessions#create'
       end
+      resources :contents
     end
   end
 
