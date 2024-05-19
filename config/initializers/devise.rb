@@ -310,4 +310,27 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+
+  #jwt config
+
+  # generate rails secret with command `bundle exec rails secret`
+  # open the rails credentails file with command `EDITOR='vim' rails credentails:edit`
+  # edit the file with the key devise_jwt_secret_key and paste the value received from rails secret
+  # the file looks like:
+  # devise_jwt_secret_key: secret_value_generated
+  # NOTE: the key can be any word 
+
+  config.jwt do |jwt|
+    jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
+    jwt.dispatch_requests = [
+      ['POST', %r{^/api/v1/auth/sign_in$}]
+    ]
+    # UNCOMMENT_ME: uncoment the recovation_request and update it with
+    # the method name and url to which the jwt is reinvoked
+    # jwt.revocation_requests = []
+
+    # the token expires after 10 minutes
+    jwt.expiration_time = 10.minutes.to_i
+end
+
 end
