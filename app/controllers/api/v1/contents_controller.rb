@@ -1,6 +1,7 @@
 class Api::V1::ContentsController < ApplicationController
   respond_to :json
-  before_action :set_content, only: %i[show update destroy]
+  before_action :set_content, only: %i[show update destroy authorized_user?]
+  before_action :authorized_user?, only: %i[update destroy]
 
   # GET /api/v1/contents
   def index
@@ -39,6 +40,12 @@ class Api::V1::ContentsController < ApplicationController
   end
 
   private
+
+  def authorized_user?
+    unless @content.user == current_user
+      render json: {error: "You are not authorized to perform this action."}, status: :unauthorized
+    end
+  end
 
   def set_content
     @content = Content.find(params[:id])
