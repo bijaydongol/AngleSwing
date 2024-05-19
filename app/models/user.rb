@@ -7,4 +7,5 @@ class User < ApplicationRecord
 
          # if you don't want the revocation of the jwt mention it as null 
   validates :first_name, :last_name, presence: true
+  has_many :contents, dependent: :destroy
 end
