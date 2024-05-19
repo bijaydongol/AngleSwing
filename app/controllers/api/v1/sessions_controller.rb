@@ -1,6 +1,11 @@
 class Api::V1::SessionsController < Devise::SessionsController
-  before_action :configure_permitted_parameters, on: :create
   respond_to :json
+
+  def transform_auth_params
+    if params[:auth]
+      params[:user] = params.delete(:auth)
+    end
+  end
 
   private
 
