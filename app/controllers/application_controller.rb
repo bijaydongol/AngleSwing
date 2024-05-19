@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  respond_to :json
+  before_action :authenticate_user!, unless: :devise_controller?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
@@ -13,6 +15,14 @@ class ApplicationController < ActionController::API
       CustomParameterSanitizer.new(User, :user, params)
     else
       super # Use the default one for other Devise models (if any)
+    end
+  end
+
+  def authenticate_user!(options = {})
+    if user_signed_in?
+      super(options)
+    else
+      render json: { error: 'You need to sign in or sign up before continuing.' }, status: :unauthorized
     end
   end
 end
