@@ -3,9 +3,9 @@ Rails.application.routes.draw do
     namespace :v1  do
       devise_scope :user do
         # route for registration
-        post 'users/sign_up', to: 'registrations#create'
+        post 'users/signup', to: 'registrations#create'
         # route for login
-        post 'auth/sign_in', to: 'sessions#create'
+        post 'auth/signin', to: 'sessions#create'
       end
     end
   end
