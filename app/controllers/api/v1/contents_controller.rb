@@ -43,7 +43,7 @@ class Api::V1::ContentsController < ApplicationController
 
   def authorized_user?
     unless @content.user == current_user
-      render json: {error: "You are not authorized to perform this action."}, status: :unauthorized
+      render json: {error: "You are not authorized to perform this action."}, status: :forbidden
     end
   end
 
