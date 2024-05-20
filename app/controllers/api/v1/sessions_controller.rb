@@ -1,26 +1,21 @@
 class Api::V1::SessionsController < Devise::SessionsController
   respond_to :json
-  before_action :configure_sign_in_params, only: [:create]
-
-  # POST /resource/sign_in
+  include SessionFix
   def create
-    self.resource = warden.authenticate!(auth_options)
-    sign_in(resource_name, resource)
-    render json: {
-      status: :ok,
-      message: 'Signed in successfully.',
-      user: UserSerializer.new(current_user).serializable_hash[:data][:attributes],
-      token: request.env['warden-jwt_auth.token']
-    }
+    user = User.find_by(email: session_params[:email])
+
+    if user && user.valid_password?(session_params[:password])
+      sign_in(user)
+      render json: {
+        data: UserSerializer.new(current_user, {params: {token: request.env['warden-jwt_auth.token']}})
+        .serializable_hash[:data]}, status: :ok
+    else
+      render json: { error: 'Invalid email or password' }, status: :unauthorized
+    end
   end
 
   private
-
-  def configure_sign_in_params
-    devise_parameter_sanitizer.permit(:sign_in, keys: [:auth])
-  end
-
-  def sign_in_params
+  def session_params
     params.require(:auth).permit(:email, :password)
   end
 
