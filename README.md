@@ -1,8 +1,8 @@
 # AngleSwing
 
 ## Dependencies
-ruby version: 3.2.0
-postgres > 14.11
+- ruby version: 3.2.0
+- postgres > 14.11
 
 ## Installation
 - clone the project from the git with command git clone <github-repo-ssh/https-url>
