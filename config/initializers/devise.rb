@@ -331,6 +331,6 @@ Devise.setup do |config|
 
     # the token expires after 10 minutes
     jwt.expiration_time = 1.day.to_i
-end
+  end
 
 end

@@ -1,7 +1,12 @@
 class Api::V1::RegistrationsController < Devise::RegistrationsController
   respond_to :json
+  include SessionFix
 
   private
+
+  def sign_up_params
+    params.transform_keys(&:underscore).permit(:first_name, :last_name, :email, :password, :country)
+  end
 
   # format response to the desirable format
   def respond_with(current_user, _opts = {})
