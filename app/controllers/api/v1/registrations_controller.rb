@@ -23,10 +23,4 @@ class Api::V1::RegistrationsController < Devise::RegistrationsController
       }, status: :unprocessable_entity
     end
   end
-
-# protected
-#   # Tell Devise which mapping to use
-#   def after_sign_up_path_for(resource)
-#     '/api/v1/users/sign_up'
-#   end
 end
